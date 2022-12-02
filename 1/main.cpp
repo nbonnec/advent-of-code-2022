@@ -36,7 +36,8 @@ int main() {
 	std::ranges::sort(elfBackpack, std::ranges::greater{});
 	const auto total = std::accumulate(elfBackpack.begin(), elfBackpack.begin() + 3, 0);
 
-
 	std::cout << "Part two\n";
 	std::cout << total << '\n';
+
+	return 0;
 }

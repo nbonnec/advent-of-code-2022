@@ -5,3 +5,4 @@ project(advent2022)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/1)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2)
