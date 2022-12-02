@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <numeric>
 #include <ranges>
 #include <source_location>
 #include <string>
@@ -29,5 +30,13 @@ int main() {
 		}
 	}
 
-	std::cout << std::ranges::max(elfBackpack);
+	std::cout << "Part one\n";
+	std::cout << std::ranges::max(elfBackpack) << '\n';
+
+	std::ranges::sort(elfBackpack, std::ranges::greater{});
+	const auto total = std::accumulate(elfBackpack.begin(), elfBackpack.begin() + 3, 0);
+
+
+	std::cout << "Part two\n";
+	std::cout << total << '\n';
 }
