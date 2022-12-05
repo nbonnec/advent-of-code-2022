@@ -13,6 +13,10 @@
 
 namespace fs = std::filesystem;
 
+static constexpr char myRock = 'X';
+static constexpr char myPaper = 'Y';
+static constexpr char myScissor = 'Z';
+
 static bool isRock(char c) {
 	return c == 'A' || c == 'X';
 }
@@ -23,6 +27,18 @@ static bool isPaper(char c) {
 
 static bool isScissor(char c) {
 	return c == 'C' || c == 'Z';
+}
+
+static bool needToLose(char c) {
+	return c == 'X';
+}
+
+static bool needToDraw(char c) {
+	return c == 'Y';
+}
+
+static bool needToWin(char c) {
+	return c == 'Z';
 }
 
 static int getValue(char c) {
@@ -70,23 +86,73 @@ static int getScore(char c1, char c2) {
 	return 3;
 }
 
+static char getHand(char c1, char c2) {
+	if (isRock(c1)) {
+		if (needToLose(c2)) {
+			return myScissor;
+		}
+		if (needToDraw(c2)) {
+			return myRock;
+		}
+		return myPaper;
+	} else if (isPaper(c1)) {
+		if (needToLose(c2)) {
+			return myRock;
+		}
+		if (needToDraw(c2)) {
+			return myPaper;
+		}
+		return myScissor;
+	}
+	// Scissors
+	if (needToLose(c2)) {
+		return myPaper;
+	}
+	if (needToDraw(c2)) {
+		return myScissor;
+	}
+	return myRock;
+}
+
 int main() {
 	const auto thisSourceLocation = std::source_location::current();
 	const auto samplePath = fs::path{thisSourceLocation.file_name()}.parent_path() / "input.txt";
 
-	auto ifs = std::ifstream{samplePath, std::ios::in};
+	{
+		auto ifs = std::ifstream{samplePath, std::ios::in};
 
-	int sum{};
-	for (std::string line{}; std::getline(ifs, line);) {
-		auto iss = std::istringstream{line};
-		char one{};
-		char two{};
-		iss >> one >> two;
-		sum += getValue(two) + getScore(one, two);
+		int sum{};
+		for (std::string line{}; std::getline(ifs, line);) {
+			auto iss = std::istringstream{line};
+			char one{};
+			char two{};
+			iss >> one >> two;
+			sum += getValue(two) + getScore(one, two);
+		}
+
+		std::cout << "Part one\n";
+		std::cout << sum << '\n';
 	}
 
-	std::cout << "Part one\n";
-	std::cout << sum << '\n';
+	{
+		// X lose
+		// Y draw
+		// Z win
+		auto ifs = std::ifstream{samplePath, std::ios::in};
+
+		int sum{};
+		for (std::string line{}; std::getline(ifs, line);) {
+			auto iss = std::istringstream{line};
+			char one{};
+			char two{};
+			iss >> one >> two;
+			const auto hand = getHand(one, two);
+			sum += getValue(hand) + getScore(one, hand);
+		}
+
+		std::cout << "Part two\n";
+		std::cout << sum << '\n';
+	}
 
 	return 0;
 }
