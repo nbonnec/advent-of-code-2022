@@ -53,7 +53,18 @@ static int partOne() {
 }
 
 static int partTwo() {
-	return 0;
+	auto ifs = getFile();
+
+	int sum{};
+	for (std::string line; std::getline(ifs, line);) {
+		const auto [elf1, elf2] = splitStrings(line, ',');
+		const auto v1 = getSectionsView(elf1);
+		const auto v2 = getSectionsView(elf2);
+
+		sum += std::ranges::find_first_of(v1, v2) != v1.end();
+	}
+
+	return sum;
 }
 
 int main() {
