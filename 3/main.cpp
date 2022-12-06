@@ -1,5 +1,6 @@
+#include <algorithm>
 #include <filesystem>
-#include <iostream>
+#include <fstream>
 #include <source_location>
 
 #include "config.hpp"
@@ -15,6 +16,16 @@ const auto filePath = []() {
 }();
 
 int main() {
-	std::cout << filePath;
-	return 0;
+	auto ifs = std::ifstream{filePath, std::ios::in};
+
+	int sum{};
+	for (std::string line; std::getline(ifs, line);) {
+		const auto midpoint = line.size() / 2;
+		const auto it =
+			std::find_first_of(line.begin(), line.begin() + midpoint, line.begin() + midpoint + 1, line.end());
+		const auto priority = std::islower(*it) ? *it - 'a' + 1 : *it - 'A' + 1 + 26;
+		sum += priority;
+	}
+
+	return sum;
 }
