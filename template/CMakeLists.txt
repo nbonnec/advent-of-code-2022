@@ -1,10 +1,14 @@
-set(EXE x)
-add_executable(${EXE} main.cpp)
+
+get_filename_component(DAY ${CMAKE_CURRENT_LIST_DIR} NAME)
+
+add_executable(${DAY} main.cpp)
 
 target_include_directories(
-        ${EXE}
+        ${DAY}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/../config/
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+target_link_libraries(${DAY} PRIVATE Utils)

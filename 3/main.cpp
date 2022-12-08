@@ -6,6 +6,7 @@
 #include <source_location>
 
 #include "config.hpp"
+#include "ScopeTime.hpp"
 
 namespace fs = std::filesystem;
 
@@ -29,8 +30,9 @@ static int partOne() {
 	int sum{};
 	for (std::string line; std::getline(ifs, line);) {
 		const auto midpoint = line.size() / 2;
-		const auto it =
-			std::find_first_of(line.begin(), line.begin() + midpoint, line.begin() + midpoint + 1, line.end());
+		const auto first = line.substr(0, midpoint);
+		const auto second = line.substr(midpoint, line.size());
+		const auto it = std::ranges::find_first_of(first, second);
 		sum += getPriority(*it);
 	}
 	return sum;
@@ -70,6 +72,7 @@ static int partTwo() {
 }
 
 int main() {
+	utils::ScopeTime timeMeasure{};
 	std::cout << "Part one: " << partOne() << '\n';
 	std::cout << "Part two: " << partTwo() << '\n';
 	return 0;
