@@ -7,9 +7,9 @@
 namespace utils {
 
 // Do it for numerics
-constexpr void printRange(const auto& r) {
+constexpr void printRange(const auto& r, const char separator = '\n') {
 	for (const auto& s : r) {
-		std::cout << s << '\n';
+		std::cout << s << separator;
 	}
 }
 
