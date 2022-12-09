@@ -101,26 +101,30 @@ static Instructions getInstructions() {
 	return instructions;
 }
 
-static std::string partOne() {
+enum class Part { ONE, TWO };
+
+template <Part part>
+static std::string getTopCrates() {
 	auto stacks = getStacks();
 
 	for (auto instructions = getInstructions(); auto i : instructions) {
 		auto& from = stacks[i.from - 1];
 		auto& to = stacks[i.to - 1];
-		auto toMove = from | std::views::reverse | std::views::take(i.count);
+		auto toMove = [&from, &i]() {
+			if constexpr (part == Part::ONE) {
+				return from | std::views::reverse | std::views::take(i.count);
+			} else {
+				return from | std::views::reverse | std::views::take(i.count) | std::views::reverse;
+			}
+		}();
 		to = std::accumulate(toMove.begin(), toMove.end(), to);
 		from.erase(from.end() - i.count, from.end());
 	}
 	return std::accumulate(stacks.begin(), stacks.end(), std::string{},
 						   [](const std::string& acc, const auto s) { return acc + s.back(); });
 }
-
-static int partTwo() {
-	return 0;
-}
-
 int main() {
-	std::cout << "Part one: " << partOne() << '\n';
-	std::cout << "Part two: " << partTwo() << '\n';
+	std::cout << "Part one: " << getTopCrates<Part::ONE>() << '\n';
+	std::cout << "Part two: " << getTopCrates<Part::TWO>() << '\n';
 	return 0;
 }
