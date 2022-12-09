@@ -30,12 +30,12 @@ static int partOne() {
 		std::string fourChars{};
 		const auto it = rng::find_if(line, [&fourChars](auto c) {
 			fourChars += std::string{c};
-			if (fourChars.size() > 4) {
+			if (fourChars.size() > 14) {
 				fourChars.erase(fourChars.begin());
 			}
-			if (fourChars.size() == 4) {
+			if (fourChars.size() == 14) {
 				const auto s = std::set<char>{fourChars.begin(), fourChars.end()};
-				return s.size() == 4;
+				return s.size() == 14;
 			}
 			return false;
 		});
