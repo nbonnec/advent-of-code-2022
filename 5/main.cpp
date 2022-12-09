@@ -1,8 +1,11 @@
 #include <algorithm>
 #include <array>
+#include <cassert>
+#include <charconv>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <numeric>
 #include <ranges>
 #include <source_location>
 #include <vector>
@@ -62,10 +65,54 @@ static Crates getStacks() {
 	return stacks;
 }
 
-static int partOne() {
+struct Instruction {
+	int count{};
+	int from{};
+	int to{};
+};
+
+using Instructions = std::vector<Instruction>;
+
+static Instructions getInstructions() {
+	auto ifs = getFile();
+
+	// Seek to empty line
+	for (std::string line; std::getline(ifs, line);) {
+		if (line.empty()) {
+			break;
+		}
+	}
+
+	Instructions instructions{};
+	for (std::string line; std::getline(ifs, line);) {
+		std::vector<int> instr{};
+		std::istringstream iss{line};
+		for (std::string word; std::getline(iss, word, ' ');) {
+			int result;
+			auto [ptr, ec] = std::from_chars(word.data(), word.data() + word.size(), result);
+			if (ec == std::errc{}) {
+				instr.emplace_back(result);
+			}
+		}
+		assert(instr.size() == 3);
+		instructions.push_back({instr[0], instr[1], instr[2]});
+	}
+
+	return instructions;
+}
+
+static std::string partOne() {
 	auto stacks = getStacks();
-	utils::printRange(stacks);
-	return 0;
+
+	for (auto instructions = getInstructions(); auto i : instructions) {
+		auto& from = stacks[i.from - 1];
+		auto& to = stacks[i.to - 1];
+		auto toMove = from | std::views::reverse | std::views::take(i.count);
+		to = std::accumulate(toMove.begin(), toMove.end(), to);
+		from.erase(from.end() - i.count, from.end());
+	}
+	return std::accumulate(stacks.begin(), stacks.end(), std::string{},
+						   [](const std::string& acc, const auto s) { return acc + s.back(); });
 }
 
 static int partTwo() {
