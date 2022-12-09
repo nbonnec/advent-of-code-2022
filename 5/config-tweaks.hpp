@@ -3,7 +3,7 @@
 namespace details::config {
 
 inline bool useSample() noexcept {
-	return true;
+	return false;
 }
 
 } // namespace details::config
