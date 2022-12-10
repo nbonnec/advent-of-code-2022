@@ -6,6 +6,13 @@
 
 namespace utils {
 
+template <typename... Ts>
+struct Overload : public Ts... {
+	using Ts::operator()...;
+};
+template <class... Ts>
+Overload(Ts...) -> Overload<Ts...>;
+
 // Do it for numerics
 constexpr void printRange(const auto& r, const char separator = '\n') {
 	for (const auto& s : r) {

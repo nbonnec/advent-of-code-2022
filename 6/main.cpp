@@ -13,13 +13,10 @@
 namespace fs = std::filesystem;
 namespace rng = std::ranges;
 
-// Config
 static std::ifstream getFile() {
-	const auto filePath = []() {
-		const auto thisFileName = std::source_location::current().file_name();
-		const std::string inputName = details::config::useSample() ? "sample.txt" : "input.txt";
-		return fs::path{thisFileName}.parent_path() / inputName;
-	}();
+	const auto thisFileName = std::source_location::current().file_name();
+	const std::string inputName = details::config::useSample() ? "sample.txt" : "input.txt";
+	const auto filePath = fs::path{thisFileName}.parent_path() / inputName;
 	return {filePath, std::ios::in};
 }
 
