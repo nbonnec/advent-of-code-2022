@@ -89,7 +89,7 @@ static bool isListCommand(std::string_view sv) {
 	return sv.starts_with("$ ls");
 }
 
-using Sizes = std::map<std::string, int>;
+using Sizes = std::vector<int>;
 
 static int getDirSize(std::ifstream& ifs, Sizes& sizes) {
 	int currentDirSize{};
@@ -100,8 +100,9 @@ static int getDirSize(std::ifstream& ifs, Sizes& sizes) {
 			if (cd->name == "..") {
 				return currentDirSize;
 			} else {
-				sizes[cd->name] = getDirSize(ifs, sizes);
-				currentDirSize += sizes[cd->name];
+				const auto childDirSize = getDirSize(ifs, sizes);
+				sizes.emplace_back(childDirSize);
+				currentDirSize += childDirSize;
 			}
 		} else if (auto fileEntry = std::get_if<FileEntry>(&parsed)) {
 			currentDirSize += fileEntry->size;
@@ -116,8 +117,7 @@ static int partOne() {
 	Sizes sizes;
 	getDirSize(ifs, sizes);
 
-	auto lessThan = sizes | std::views::filter([](const auto s) { return s.second < 100000; })
-				  | std::views::transform([](const auto s) { return s.second; });
+	auto lessThan = sizes | std::views::filter([](const auto s) { return s < 100000; });
 	return std::accumulate(lessThan.begin(), lessThan.end(), int{});
 }
 
