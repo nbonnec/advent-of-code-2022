@@ -77,18 +77,6 @@ inline std::ostream& operator<<(std::ostream& os, const Parsed& parsed) {
 	return os;
 }
 
-static bool isCommand(std::string_view sv) {
-	return sv.starts_with("$");
-}
-
-static bool isChangeDirectoryCommand(std::string_view sv) {
-	return sv.starts_with("$ cd");
-}
-
-static bool isListCommand(std::string_view sv) {
-	return sv.starts_with("$ ls");
-}
-
 using Sizes = std::vector<int>;
 
 static int getDirSize(std::ifstream& ifs, Sizes& sizes) {
@@ -112,21 +100,17 @@ static int getDirSize(std::ifstream& ifs, Sizes& sizes) {
 	return currentDirSize;
 }
 
-static int partOne() {
+int main() {
 	auto ifs = getFile();
 	Sizes sizes;
 	getDirSize(ifs, sizes);
 
-	auto lessThan = sizes | std::views::filter([](const auto s) { return s < 100000; });
-	return std::accumulate(lessThan.begin(), lessThan.end(), int{});
-}
+	auto lessThan100K = sizes | std::views::filter([](const auto s) { return s < 100000; });
+	std::cout << "Part one: " << std::accumulate(lessThan100K.begin(), lessThan100K.end(), int{}) << '\n';
 
-static int partTwo() {
-	return 0;
-}
+	const auto needed = 30'000'000 - (70'000'000 - sizes.back());
+	auto bigEnoughDirs = sizes | std::views::filter([needed](const auto s) { return s > needed; });
 
-int main() {
-	std::cout << "Part one: " << partOne() << '\n';
-	std::cout << "Part two: " << partTwo() << '\n';
+	std::cout << "Part two: " << *rng::min_element(bigEnoughDirs);
 	return 0;
 }
