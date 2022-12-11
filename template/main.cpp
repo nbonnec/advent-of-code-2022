@@ -9,6 +9,7 @@
 
 namespace fs = std::filesystem;
 namespace rng = std::ranges;
+namespace vws = std::views;
 
 static std::ifstream getFile() {
 	const auto thisFileName = std::source_location::current().file_name();
