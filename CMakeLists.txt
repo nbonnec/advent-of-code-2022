@@ -4,6 +4,18 @@ project(advent2022)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# === FetchContent ===
+
+include(FetchContent)
+
+FetchContent_Declare(
+        fmtlib
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG 9.1.0)
+FetchContent_MakeAvailable(fmtlib)
+
+# === FetchContent ===
+
 add_subdirectory(utils)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/1)

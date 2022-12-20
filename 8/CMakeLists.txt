@@ -11,4 +11,4 @@ target_include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(${DAY} PRIVATE Utils)
+target_link_libraries(${DAY} PRIVATE Utils fmt::fmt)
