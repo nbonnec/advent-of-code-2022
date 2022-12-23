@@ -11,8 +11,8 @@ class ScopeTime {
 
 public:
 	/// Build the object with a source location to be displayed at destruction.
-	/// \param current the current source location
-	ScopeTime(std::source_location current = std::source_location::current());
+	/// @param current the current source location
+	explicit ScopeTime(std::source_location current = std::source_location::current());
 
 	/// On destruction the object will display elapsed time since creation.
 	~ScopeTime();

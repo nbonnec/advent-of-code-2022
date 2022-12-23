@@ -13,11 +13,4 @@ struct Overload : public Ts... {
 template <class... Ts>
 Overload(Ts...) -> Overload<Ts...>;
 
-// Do it for numerics
-constexpr void printRange(const auto& r, const char separator = '\n') {
-	for (const auto& s : r) {
-		std::cout << s << separator;
-	}
-}
-
 } // namespace utils
