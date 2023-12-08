@@ -1,10 +1,16 @@
-set(EXE 2022-4)
-add_executable(${EXE} main.cpp)
+
+get_filename_component(DAY ${CMAKE_CURRENT_LIST_DIR} NAME)
+
+set(OUT "2022-${DAY}")
+
+add_executable(${OUT} main.cpp)
 
 target_include_directories(
-        ${EXE}
+        ${OUT}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/../config/
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+target_link_libraries(${OUT} PRIVATE Utils)

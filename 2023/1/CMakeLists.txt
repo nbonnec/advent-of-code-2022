@@ -1,7 +1,7 @@
 
 get_filename_component(DAY ${CMAKE_CURRENT_LIST_DIR} NAME)
 
-set(OUT "2022-${DAY}")
+set(OUT "2023-${DAY}")
 
 add_executable(${OUT} main.cpp)
 

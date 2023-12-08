@@ -24,6 +24,7 @@ FetchContent_MakeAvailable(magiclib)
 
 add_subdirectory(utils)
 
+# 2022
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/1)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/2)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/3)
@@ -33,3 +34,6 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/6)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/7)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/8)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/9)
+
+# 2023
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2023/1)
