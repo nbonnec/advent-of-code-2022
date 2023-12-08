@@ -1,4 +1,4 @@
-set(EXE 4)
+set(EXE 2022-4)
 add_executable(${EXE} main.cpp)
 
 target_include_directories(

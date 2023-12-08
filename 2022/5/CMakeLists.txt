@@ -1,7 +1,7 @@
 
 get_filename_component(DAY ${CMAKE_CURRENT_LIST_DIR} NAME)
 
-add_executable(${DAY} main.cpp)
+add_executable(2022-${DAY} main.cpp)
 
 target_include_directories(
         ${DAY}

@@ -1,7 +1,7 @@
 
 get_filename_component(DAY ${CMAKE_CURRENT_LIST_DIR} NAME)
 
-add_executable(${DAY} main.cpp)
+add_executable(2022-${DAY} main.cpp)
 
 target_include_directories(
         ${DAY}
@@ -11,4 +11,4 @@ target_include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(${DAY} PRIVATE Utils)
+target_link_libraries(${DAY} PRIVATE Utils fmt::fmt)
