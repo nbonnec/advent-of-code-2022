@@ -13,7 +13,7 @@ inline bool useSample() noexcept {
 inline std::filesystem::path getInput(const int part,
 									  std::source_location loc = std::source_location::current()) noexcept {
 	const auto thisFileName = loc.file_name();
-	const auto input = fmt::format("sample{}.txt", part);
+	const auto input = fmt::format("input.txt", part);
 	return std::filesystem::path{loc.file_name()}.parent_path() / input;
 }
 

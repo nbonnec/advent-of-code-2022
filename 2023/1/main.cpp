@@ -56,29 +56,71 @@ static void partTwo() {
 			char digit;
 		};
 		const auto firstDigit = rg::find_first_of(line, digits);
-		const auto firstDigitAndPos = firstDigit != line.end() ? std::optional{
-			DigitAndPos{.pos = static_cast<std::size_t>(std::distance(line.begin(), firstDigit)), .digit = *firstDigit}} : std::nullopt;
+		const auto firstDigitAndPos =
+			firstDigit != line.end()
+				? std::optional{DigitAndPos{.pos = static_cast<std::size_t>(std::distance(line.begin(), firstDigit)),
+											.digit = *firstDigit}}
+				: std::nullopt;
 		const auto reverseLine = line | wvs::reverse;
 		const auto lastDigit = rg::find_first_of(reverseLine, digits);
 		const auto lastDigitAndPos =
-			DigitAndPos{static_cast<std::size_t>(std::distance(lastDigit, reverseLine.end()) - 1), *lastDigit};
+			lastDigit != reverseLine.end()
+				? std::optional{DigitAndPos{static_cast<std::size_t>(std::distance(lastDigit, reverseLine.end()) - 1),
+											*lastDigit}}
+				: std::nullopt;
 
 		// For letters, first we have to find all occurences
 		// We need to store all occurences and their int counterpart
-		const auto digitAndPos = std::accumulate(lettersDigits.begin(), lettersDigits.end(), std::vector<DigitAndPos>{},
-												 [&line](auto vec, const LettersDigit& ld) {
-													 const auto pos = line.find(ld.letters);
-													 if (pos != std::string::npos) {
-														 vec.emplace_back(DigitAndPos{pos, ld.digit});
-													 }
-													 return vec;
-												 });
-		const auto [min, max] = std::minmax_element(digitAndPos.begin(), digitAndPos.end(),
-													[](const auto& a, const auto& b) { return a.pos < b.pos; });
+		std::size_t firstLettersPos = std::string::npos;
+		const auto firstLettersDigit =
+			std::accumulate(lettersDigits.begin(), lettersDigits.end(), char{},
+							[&firstLettersPos, &line](const auto digit, const LettersDigit& ld) {
+								const auto p = line.rfind(ld.letters);
+								if (p != std::string::npos) {
+									if (firstLettersPos == std::string::npos || firstLettersPos > p) {
+										firstLettersPos = p;
+										return ld.digit;
+									}
+								}
+								return digit;
+							});
 
-		const auto finalFirst = firstDigitAndPos.pos < min->pos ? firstDigitAndPos.digit : min->digit;
-		const auto lastFirst = lastDigitAndPos.pos > max->pos ? lastDigitAndPos.digit : max->digit;
-		return std::stoi(fmt::format("{}{}", finalFirst, lastFirst));
+		std::size_t lastLettersPos = std::string::npos;
+		const auto lastLettersDigit =
+			std::accumulate(lettersDigits.begin(), lettersDigits.end(), char{},
+							[&lastLettersPos, &line](const auto digit, const LettersDigit& ld) {
+								const auto p = line.rfind(ld.letters);
+								if (p != std::string::npos) {
+									if (lastLettersPos == std::string::npos || lastLettersPos < p) {
+										lastLettersPos = p;
+										return ld.digit;
+									}
+								}
+								return digit;
+							});
+
+		char realFirstDigit{};
+		if (!firstDigitAndPos.has_value()) {
+			realFirstDigit = firstLettersDigit;
+		} else if (firstLettersDigit == std::string::npos) {
+			realFirstDigit = firstDigitAndPos.value().digit;
+		} else {
+			realFirstDigit =
+				firstDigitAndPos.value().pos < firstLettersPos ? firstDigitAndPos.value().digit : firstLettersDigit;
+		}
+		char realLastDigit{};
+		if (!lastDigitAndPos.has_value()) {
+			realLastDigit = lastLettersDigit;
+		} else if (lastLettersDigit == std::string::npos) {
+			realLastDigit = lastDigitAndPos.value().digit;
+		} else {
+			realLastDigit =
+				lastDigitAndPos.value().pos > lastLettersPos ? lastDigitAndPos.value().digit : lastLettersDigit;
+		}
+
+		const auto c = std::stoi(fmt::format("{}{}", realFirstDigit, realLastDigit));
+		fmt::print("Combine is {}\n", c);
+		return acc + c;
 	};
 	auto ifs = std::ifstream{details::config::getInput(2), std::ios::in};
 	const auto sum =
