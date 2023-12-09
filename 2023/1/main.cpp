@@ -75,7 +75,7 @@ static void partTwo() {
 		const auto firstLettersDigit =
 			std::accumulate(lettersDigits.begin(), lettersDigits.end(), char{},
 							[&firstLettersPos, &line](const auto digit, const LettersDigit& ld) {
-								const auto p = line.rfind(ld.letters);
+								const auto p = line.find(ld.letters);
 								if (p != std::string::npos) {
 									if (firstLettersPos == std::string::npos || firstLettersPos > p) {
 										firstLettersPos = p;
@@ -102,7 +102,7 @@ static void partTwo() {
 		char realFirstDigit{};
 		if (!firstDigitAndPos.has_value()) {
 			realFirstDigit = firstLettersDigit;
-		} else if (firstLettersDigit == std::string::npos) {
+		} else if (firstLettersPos == std::string::npos) {
 			realFirstDigit = firstDigitAndPos.value().digit;
 		} else {
 			realFirstDigit =
@@ -111,7 +111,7 @@ static void partTwo() {
 		char realLastDigit{};
 		if (!lastDigitAndPos.has_value()) {
 			realLastDigit = lastLettersDigit;
-		} else if (lastLettersDigit == std::string::npos) {
+		} else if (lastLettersPos == std::string::npos) {
 			realLastDigit = lastDigitAndPos.value().digit;
 		} else {
 			realLastDigit =
