@@ -11,7 +11,7 @@ include(FetchContent)
 FetchContent_Declare(
         fmtlib
         GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-        GIT_TAG 9.1.0)
+        GIT_TAG 10.1.1)
 FetchContent_MakeAvailable(fmtlib)
 
 FetchContent_Declare(
@@ -37,3 +37,4 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2022/9)
 
 # 2023
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2023/1)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2023/2)
