@@ -54,9 +54,28 @@ static void partOne() {
 }
 
 static void partTwo() {
+	auto ifs = std::ifstream{getInput(1), std::ios::in};
+	int sum = 0;
+	for (std::string line{}; std::getline(ifs, line);) {
+		fmt::print("{}\n", line);
+		std::stringstream ss{line};
+
+		std::map<std::string, int> map{{"red", 0}, {"blue", 0}, {"green", 0}};
+		for (std::string part{}; std::getline(ss, part, ';');) {
+			const std::regex reg{"([0-9]+) (red|blue|green)"};
+			for (auto i = std::sregex_iterator{part.begin(), part.end(), reg}; i != std::sregex_iterator{}; ++i) {
+				if (i->size() == 3) {
+					const auto color = (*i)[2];
+					map[color] = std::max(map[color], std::stoi((*i)[1]));
+				}
+			}
+		}
+		sum += std::accumulate(map.begin(), map.end(), 1, [](int acc, const auto& elem) { return acc * elem.second; });
+	}
+	fmt::print("Sum is {}\n", sum);
 }
 
 int main() {
-	partOne();
+	// partOne();
 	partTwo();
 }
